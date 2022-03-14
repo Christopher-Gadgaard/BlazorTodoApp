@@ -12,39 +12,42 @@ public class TodoFileDAO : ITodoHome
         this.fileContext = fileContext;
     }
 
-    public async Task<ICollection<Todo>> GetAsync()
+    public Task<ICollection<Todo>> GetAsync()
     {
         ICollection<Todo> todos = fileContext.Todos;
-        return todos;
+        return Task.FromResult(todos);
     }
 
-    public async Task<Todo> GetById(int id)
+    public async Task<Todo> GetByIdAsync(int id)
     {
         return fileContext.Todos.First(t => t.Id == id);
     }
 
-    public async Task<Todo> AddAsync(Todo todo)
+    public Task<Todo> AddAsync(Todo todo)
     {
         int largestId = fileContext.Todos.Max(t => t.Id);
         int nextId = largestId + 1;
         todo.Id = nextId;
         fileContext.Todos.Add(todo);
         fileContext.SaveChanges();
-        return todo;
+        return Task.FromResult(todo);
     }
 
-    public async Task DeleteAsync(int id)
+    public Task DeleteAsync(int id)
     {
         Todo toDelete = fileContext.Todos.First(t => t.Id == id);
         fileContext.Todos.Remove(toDelete);
         fileContext.SaveChanges();
+        return Task.CompletedTask;
     }
 
-    public async Task UpdateAsync(Todo todo)
+    public Task UpdateAsync(Todo todo)
     {
         Todo toUpdate = fileContext.Todos.First(t => t.Id == todo.Id);
         toUpdate.IsCompleted = todo.IsCompleted;
         toUpdate.OwnerId = todo.OwnerId;
+        toUpdate.Title = todo.Title;
         fileContext.SaveChanges();
+        return Task.CompletedTask;
     }
 }
