@@ -12,15 +12,15 @@ public class TodoFileDAO : ITodoHome
         this.fileContext = fileContext;
     }
 
-    public Task<ICollection<Todo>> GetAsync()
+    public async Task<ICollection<Todo>> GetAsync()
     {
         ICollection<Todo> todos = fileContext.Todos;
-        return Task.FromResult(todos);
+        return todos;
     }
 
     public async Task<Todo> GetByIdAsync(int id)
     {
-        return fileContext.Todos.First(t => t.Id == id);
+        return  fileContext.Todos.First(t => t.Id == id);
     }
 
     public Task<Todo> AddAsync(Todo todo)
