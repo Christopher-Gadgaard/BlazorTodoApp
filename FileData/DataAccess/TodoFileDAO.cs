@@ -23,22 +23,21 @@ public class TodoFileDAO : ITodoHome
         return  fileContext.Todos.First(t => t.Id == id);
     }
 
-    public Task<Todo> AddAsync(Todo todo)
+    public async Task<Todo> AddAsync(Todo todo)
     {
         int largestId = fileContext.Todos.Max(t => t.Id);
         int nextId = largestId + 1;
         todo.Id = nextId;
         fileContext.Todos.Add(todo);
         fileContext.SaveChanges();
-        return Task.FromResult(todo);
+        return todo;
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         Todo toDelete = fileContext.Todos.First(t => t.Id == id);
         fileContext.Todos.Remove(toDelete);
         fileContext.SaveChanges();
-        return Task.CompletedTask;
     }
 
     public Task UpdateAsync(Todo todo)

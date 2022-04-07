@@ -173,8 +173,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        allTodos = await TodoHome.GetAsync();
-        todosToShow = allTodos;
+        try
+        {
+            allTodos = await TodoHome.GetAsync();
+            todosToShow = allTodos;
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+        }
     }
 
     private async Task RemoveTodo(int id)
@@ -219,7 +226,7 @@ else
 
     private void UpdateOwnerFilter(ChangeEventArgs args)
     {
-        string value = (string) args.Value;
+        string value = (string)args.Value;
         if (string.IsNullOrEmpty(value))
         {
             ownerIdFilter = null;
@@ -238,7 +245,7 @@ else
 
     private void UpdateCompletedStatusFilter(ChangeEventArgs args)
     {
-        string value = (string) args.Value;
+        string value = (string)args.Value;
 
         try
         {
